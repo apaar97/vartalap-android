@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Accent Translator VoIP</string>
+    <string name="device_id">Device ID</string>
+    <string name="open_stream">Open Audio Stream</string>
+    <string name="close_stream">Close Audio Stream</string>
+</resources>
