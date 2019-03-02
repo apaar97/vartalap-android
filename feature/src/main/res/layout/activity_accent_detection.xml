@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@mipmap/back"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".AccentDetection">
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,39 +19,33 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:layout_marginTop="50dp"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Username"
         android:padding="10dp"
         android:shadowColor="@android:color/transparent"
-        android:text="The quick brown fox jumps over the lazy little dog"
+        android:layout_marginTop="80dp"
+        android:text="@string/sample_sentence"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25dp"
-        android:textStyle="bold"
-
-
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="80dp" />
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="148dp"
+        android:id="@+id/accent_detection_mic"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/shapeoutline"
-        android:drawableLeft="@drawable/ic_mic_none_black_24dp"
-        android:drawablePadding="10dp"
-        android:hint="Username"
         android:padding="10dp"
-        android:text="Speak"
+        android:drawableLeft="@drawable/ic_mic_none_black_24dp"
+        android:layout_marginTop="200dp"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
-        android:textColorHint="@color/white"
-        tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="224dp" />
+        android:textColorHint="@color/white">
+    </Button>
 
 </LinearLayout>

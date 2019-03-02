@@ -8,4 +8,5 @@
     <string name="sample_read_instructions">
         Please tap the mic button and read the given sentence clearly. Avoid background noise for accurate results.
     </string>
+    <string name="sample_sentence">The quick brown fox jumps over the lazy dog</string>
 </resources>
