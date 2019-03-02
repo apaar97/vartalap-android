@@ -12,6 +12,7 @@
     tools:context=".LoginActivity">
 
     <TextView
+        android:id="@+id/login_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
@@ -22,6 +23,7 @@
         android:layout_marginBottom="40dp"/>
 
     <EditText
+        android:id="@+id/login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -35,6 +37,7 @@
         android:textColorHighlight="@color/white" />
 
     <EditText
+        android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -49,12 +52,14 @@
         android:textColorHighlight="@color/white"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="15dp">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp">
 
         <CheckBox
+            android:id="@+id/login_remember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Remember Me"
@@ -66,6 +71,7 @@
             android:buttonTint="@color/white"
             android:checked="true"/>
         <TextView
+            android:id="@+id/login_forgot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Forget Password"
@@ -78,10 +84,10 @@
             android:drawablePadding="6dp"
             android:padding="4dp"/>
 
-
     </LinearLayout>
 
     <Button
+        android:id="@+id/login_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
@@ -90,7 +96,28 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shapefilled"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account already?"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/login_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Signup"
+        android:shadowColor="@android:color/transparent"
+        android:padding="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/shapefilled"/>
 
 </LinearLayout>

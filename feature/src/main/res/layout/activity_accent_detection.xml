@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     android:background="@mipmap/back"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".AccentDetection">
 
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Username"
-
         android:padding="10dp"
         android:shadowColor="@android:color/transparent"
-        android:text="Read the sentence"
+        android:text="@string/sample_read_instructions"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="35dp"
-        android:textStyle="bold"
-
-
-        />
+        android:layout_marginTop="50dp"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Username"
-
         android:padding="10dp"
         android:shadowColor="@android:color/transparent"
         android:text="The quick brown fox jumps over the lazy little dog"
@@ -63,4 +56,4 @@
         tools:layout_editor_absoluteX="77dp"
         tools:layout_editor_absoluteY="224dp" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

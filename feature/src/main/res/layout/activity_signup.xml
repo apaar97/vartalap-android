@@ -12,6 +12,7 @@
     tools:context=".SignupActivity">
 
     <TextView
+        android:id="@+id/signup_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Signup"
@@ -22,6 +23,7 @@
         android:layout_marginBottom="40dp"/>
 
     <EditText
+        android:id="@+id/signup_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -36,6 +38,7 @@
 
 
     <EditText
+        android:id="@+id/signup_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -50,6 +53,7 @@
         android:textColorHighlight="@color/white" />
 
     <EditText
+        android:id="@+id/signup_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -64,6 +68,7 @@
 
 
     <Button
+        android:id="@+id/signup_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign Up"
@@ -74,9 +79,5 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shapefilled"/>
-
-
-
-
 
 </LinearLayout>
