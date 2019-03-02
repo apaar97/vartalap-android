@@ -7,10 +7,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@mipmap/back"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:padding="20dp"
     tools:context=".LoginActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/white"
+        android:textSize="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -43,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -81,7 +90,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/shapefilled"/>
 
 </LinearLayout>
