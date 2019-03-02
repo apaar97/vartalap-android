@@ -9,12 +9,11 @@ public class AccentDetection extends AppCompatActivity {
 
     private Button accentDecectionMic;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accent_detection);
 
-        accentDecectionMic = (Button)findViewById(R.id.acccent_detection_mic);
+        accentDecectionMic = (Button)findViewById(R.id.accent_detection_mic);
     }
 }
