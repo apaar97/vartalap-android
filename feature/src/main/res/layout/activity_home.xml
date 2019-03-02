@@ -6,21 +6,25 @@
     android:id="@+id/home_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
     <ImageView
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/vartalaplogo"
-        />
+        android:layout_marginTop="50dp"
+        android:background="@drawable/vartalaplogo"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Hear It Your Way"
-        android:textSize="25dp"
-        />
+        android:text="@string/vartalapfullform"
+        android:textSize="30dp"
+        android:fontFamily="sans-serif"
+        android:layout_marginLeft="10dp"
+        android:padding="25dp"
+        android:layout_marginTop="15dp"/>
 
 </LinearLayout>
