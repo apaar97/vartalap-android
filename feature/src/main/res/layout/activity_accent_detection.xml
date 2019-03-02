@@ -41,7 +41,7 @@
         tools:layout_editor_absoluteY="80dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/acccent_detection_mic"
         android:layout_width="148dp"
         android:layout_height="50dp"
         android:background="@drawable/shapeoutline"
