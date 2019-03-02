@@ -12,25 +12,20 @@
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".SignupActivity" />
+
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".HomeActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".SignupActivity" />
-        <activity
-            android:name=".LoginActivity2"
-            android:label="@string/title_activity_login2" />
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".HomeActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".MainActivity" />
     </application>
