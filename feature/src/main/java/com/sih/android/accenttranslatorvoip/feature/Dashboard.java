@@ -1,5 +1,6 @@
 package com.sih.android.accenttranslatorvoip.feature;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,11 +11,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.app.Dialog;
+import android.widget.Toast;
+import android.widget.EditText;
+import android.content.Context;
 
+import android.view.LayoutInflater;
+import android.content.DialogInterface;
 import org.w3c.dom.Text;
 
 public class Dashboard extends AppCompatActivity
@@ -44,6 +52,106 @@ public class Dashboard extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        final Context context = this;
+
+
+        //First Dialog Box - Create Room
+        contentCreateRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // custom dialog
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.create_room_dialog);
+                dialog.setTitle("Room Creation");
+
+                dialog.show();
+
+                EditText roomId = (EditText) dialog.findViewById(R.id.dashboard_room_id);
+
+
+                EditText roomPassword = (EditText) dialog.findViewById(R.id.dashboard_room_password);
+
+
+                Button acceptButton = (Button)dialog.findViewById(R.id.dashboard_accept);
+                Button cancelButton = (Button)dialog.findViewById(R.id.dashboard_cancel);
+
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new  Intent(getApplicationContext(),SignupActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        // Add new Flag to start new Activity
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+
+                        finish();
+                    }
+                });
+
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+            }
+        });
+
+
+        //Second Dialog Box - Join Room
+        contentJoinRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // custom dialog
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.create_room_dialog);
+                dialog.setTitle("Room Joining");
+
+                dialog.show();
+
+                EditText roomId = (EditText) dialog.findViewById(R.id.dashboard_room_id);
+
+                EditText roomPassword = (EditText) dialog.findViewById(R.id.dashboard_room_password);
+
+                Button acceptButton = (Button)dialog.findViewById(R.id.dashboard_accept);
+                Button cancelButton = (Button)dialog.findViewById(R.id.dashboard_cancel);
+
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new  Intent(getApplicationContext(),SignupActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        // Add new Flag to start new Activity
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+
+                        finish();
+                    }
+                });
+
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+            }
+        });
+
+
     }
 
     @Override
