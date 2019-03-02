@@ -6,12 +6,21 @@
     android:id="@+id/home_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/VARTALAPLogo"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World"/>
+        android:layout_marginTop="10dp"
+        android:text="Hear It Your Way"
+        android:textSize="25dp"
+        />
 
 </LinearLayout>

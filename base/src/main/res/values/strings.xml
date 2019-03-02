@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Accent Translator VoIP</string>
+    <string name="app_name">VARTALAP</string>
     <string name="device_id">Device ID</string>
     <string name="open_stream">Open Audio Stream</string>
     <string name="close_stream">Close Audio Stream</string>
