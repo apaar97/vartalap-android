@@ -4,4 +4,5 @@
     <string name="open_stream">Open Audio Stream</string>
     <string name="close_stream">Close Audio Stream</string>
     <string name="title_activity_login2">Login</string>
+    <string name="title_activity_dashboard">Dashboard</string>
 </resources>
