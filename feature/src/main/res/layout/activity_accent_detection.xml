@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/back"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".AccentDetection">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:shadowColor="@android:color/transparent"
+        android:text="@string/sample_read_instructions"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:shadowColor="@android:color/transparent"
+        android:layout_marginTop="80dp"
+        android:text="@string/sample_sentence"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/accent_detection_mic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shapeoutline"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_mic_none_black_24dp"
+        android:layout_marginTop="200dp"
+        android:textColor="@color/white"
+        android:textColorHighlight="@color/white"
+        android:textColorHint="@color/white">
+    </Button>
+
+</LinearLayout>

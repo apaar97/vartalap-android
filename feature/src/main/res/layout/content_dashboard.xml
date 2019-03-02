@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Dashboard"
+    tools:showIn="@layout/app_bar_dashboard"
+    android:orientation="vertical"
+    android:background="@mipmap/back"
+    android:gravity="center"
+    android:padding="20dp"
+
+    >
+
+
+    <Button
+        android:id="@+id/content_createroom"
+        android:layout_width="245dp"
+        android:layout_height="68dp"
+        android:background="@drawable/shapeoutline"
+        android:padding="15dp"
+        android:shadowColor="@android:color/transparent"
+        android:text="Create Room"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold"
+
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="108dp" />
+
+    <TextView
+        android:id="@+id/content_or_textview"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:hint="Username"
+
+        android:padding="10dp"
+        android:shadowColor="@android:color/transparent"
+        android:text="OR"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="189dp"
+
+        />
+
+    <Button
+        android:id="@+id/content_joinroom"
+        android:layout_width="245dp"
+        android:layout_height="68dp"
+        android:background="@drawable/shapeoutline"
+        android:padding="15dp"
+        android:shadowColor="@android:color/transparent"
+        android:text="Join Room"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="226dp" />
+
+</LinearLayout>
