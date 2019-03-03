@@ -21,11 +21,6 @@ import android.widget.Button;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-import java.util.Arrays;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 
@@ -34,15 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
 
     private final static int BITRATE = 44100;
-    private final static float RECORD_BUFFER_TIME = 4;  // seconds
-    private final static float PLAY_BUFFER_TIME = 4;  // seconds
+    private final static float RECORD_BUFFER_TIME = 4;
+    private final static float PLAY_BUFFER_TIME = 4;
 
     private boolean streaming = false;
 
     private AudioRecord record;
     private AudioTrack track;
 
-    private Socket socket;
+    private SocketConnection socket;
 
 
     @Override
@@ -58,48 +53,42 @@ public class MainActivity extends AppCompatActivity {
 
         requestRecordAudioPermission();
 
-        try {
-            socket = IO.socket("http://192.168.225.49:3000");
-            socket.connect();
+        socket = new SocketConnection();
 
-            int minBufferSize = AudioTrack.getMinBufferSize(
-                    BITRATE,
-                    AudioFormat.CHANNEL_IN_MONO,
-                    AudioFormat.ENCODING_PCM_FLOAT);
+        int minBufferSize = AudioTrack.getMinBufferSize(
+                BITRATE,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_FLOAT);
 
-            int bufferSizeInBytes = (int) (PLAY_BUFFER_TIME * 2 * 2 * BITRATE);
-            if (bufferSizeInBytes < minBufferSize)
-                bufferSizeInBytes = minBufferSize;
+        int bufferSizeInBytes = (int) (PLAY_BUFFER_TIME * 2 * 2 * BITRATE);
+        if (bufferSizeInBytes < minBufferSize)
+            bufferSizeInBytes = minBufferSize;
 
-            track = new AudioTrack(AudioManager.STREAM_MUSIC,
-                    BITRATE,
-                    AudioFormat.CHANNEL_OUT_MONO,
-                    AudioFormat.ENCODING_PCM_FLOAT,
-                    bufferSizeInBytes,
-                    AudioTrack.MODE_STREAM);
+        track = new AudioTrack(AudioManager.STREAM_MUSIC,
+                BITRATE,
+                AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_FLOAT,
+                bufferSizeInBytes,
+                AudioTrack.MODE_STREAM);
 
-            final int finalBufferSizeInBytes = bufferSizeInBytes;
-            socket.on("data-converted", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    try {
-                        handleIncomingData(finalBufferSizeInBytes, args);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "Error occurred.");
-                        Log.e(TAG, e.getLocalizedMessage());
-                    }
+        final int finalBufferSizeInBytes = bufferSizeInBytes;
+        socket.on("data-converted", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                try {
+                    handleIncomingData(finalBufferSizeInBytes, args);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error occurred.");
+                    Log.e(TAG, e.getLocalizedMessage());
                 }
-            });
-            socket.on("error", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.e(TAG, String.valueOf(args[0]));
-                }
-            });
-        } catch (URISyntaxException e) {
-            Log.e(TAG, "Error occurred.");
-            Log.e(TAG, e.getLocalizedMessage());
-        }
+            }
+        });
+        socket.on("error", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.e(TAG, String.valueOf(args[0]));
+            }
+        });
     }
 
     @Override
@@ -246,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
 
                         JSONObject obj = new JSONObject();
                         try {
-                            Log.d(TAG, Arrays.toString(chunk));
                             obj.put("packet-no", packetNo++);
                             obj.put("socket-id", socket.id());
                             obj.put("audio-buffer", JSONObject.wrap(chunk));
@@ -269,6 +257,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Stopped recording...");
             }
         }).start();
-
     }
 }
