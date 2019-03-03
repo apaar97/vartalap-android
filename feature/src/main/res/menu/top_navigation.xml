@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/chat_bar"
+        android:icon="@drawable/ic_mode_comment_black_24dp"
+        android:title="Chat"
+        />
+
+    <item
+        android:id="@+id/online_bar"
+        android:icon="@drawable/ic_people_outline_black_24dp"
+        android:title="Online"
+        />
+</menu>
