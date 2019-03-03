@@ -10,6 +10,7 @@
         android:scaleType="center"
         android:background="@color/colorPrimary"
         android:contentDescription="@string/app_name" />
+
     <EditText
         android:id="@+id/dashboard_room_id"
         android:inputType="textEmailAddress"
@@ -32,18 +33,29 @@
         android:fontFamily="sans-serif"
         android:hint="Room Password"/>
 
-    <Button
-        android:id="@+id/dashboard_accept"
-        android:layout_width="150dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Accept" />
+        android:layout_gravity="center"
+        android:background="#3E80B4"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/dashboard_cancel"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Cancel" />
+
+
+        <Button
+            android:id="@+id/dashboard_accept"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Accept" />
+
+        <Button
+            android:id="@+id/dashboard_cancel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Cancel" />
+
+    </LinearLayout>
 
 </LinearLayout>
