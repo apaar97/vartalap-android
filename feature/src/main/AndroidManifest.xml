@@ -8,11 +8,13 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ChatRoom"/>
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".AccentDetection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -20,9 +22,7 @@
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".HomeActivity">
-
-        </activity>
+        <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

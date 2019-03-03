@@ -80,7 +80,7 @@ public class Dashboard extends AppCompatActivity
                 acceptButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new  Intent(getApplicationContext(),SignupActivity.class);
+                        Intent i = new  Intent(getApplicationContext(),ChatRoom.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                         // Add new Flag to start new Activity
