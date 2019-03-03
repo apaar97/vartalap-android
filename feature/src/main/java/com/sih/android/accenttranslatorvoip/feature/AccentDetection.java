@@ -25,8 +25,6 @@ public class AccentDetection extends AppCompatActivity {
 
     private boolean streaming = false;
 
-    private Button accentDecectionMic;
-
     private AudioRecord record;
     private SocketConnection socket;
 
@@ -36,7 +34,7 @@ public class AccentDetection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accent_detection);
 
-        accentDecectionMic = findViewById(R.id.accent_detection_mic);
+        Button accentDecectionMic = findViewById(R.id.accent_detection_mic);
 
         socket = new SocketConnection();
 

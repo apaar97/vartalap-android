@@ -72,17 +72,22 @@ public class MainActivity extends AppCompatActivity {
                 AudioTrack.MODE_STREAM);
 
         final int finalBufferSizeInBytes = bufferSizeInBytes;
-        socket.on("data-converted", new Emitter.Listener() {
+        new Thread(new Runnable() {
             @Override
-            public void call(Object... args) {
-                try {
-                    handleIncomingData(finalBufferSizeInBytes, args);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error occurred.");
-                    Log.e(TAG, e.getLocalizedMessage());
-                }
+            public void run() {
+                socket.on("data-converted", new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        try {
+                            handleIncomingData(finalBufferSizeInBytes, args);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "Error occurred.");
+                            Log.e(TAG, e.getLocalizedMessage());
+                        }
+                    }
+                });
             }
-        });
+        }).start();
         socket.on("error", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
