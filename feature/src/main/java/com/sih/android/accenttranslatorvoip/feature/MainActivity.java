@@ -3,11 +3,14 @@ package com.sih.android.accenttranslatorvoip.feature;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,29 +21,23 @@ import android.widget.Button;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = MainActivity.class.getSimpleName();
-    private final int PORT = 3000;
 
-    private static int[] mSampleRates = new int[] { 8000, 11025, 16000, 22050, 44100 };
-    private final static int BITRATE = 16000;
-    private final static float RECORD_BUFFER_TIME = 4;  // seconds
-    private final static float PLAY_BUFFER_TIME = 4;  // seconds
+    private final static int BITRATE = 44100;
+    private final static float RECORD_BUFFER_TIME = 4;
+    private final static float PLAY_BUFFER_TIME = 4;
 
     private boolean streaming = false;
 
-    private ADPCM adpcm;
     private AudioRecord record;
     private AudioTrack track;
 
-    private Socket socket;
+    private SocketConnection socket;
 
 
     @Override
@@ -56,15 +53,47 @@ public class MainActivity extends AppCompatActivity {
 
         requestRecordAudioPermission();
 
-        adpcm = new ADPCM();
+        socket = new SocketConnection();
 
-        try {
-            socket = IO.socket("http://192.168.225.49:3000");
-            socket.connect();
-        } catch (URISyntaxException e) {
-            Log.e(TAG, "Error occurred.");
-            Log.e(TAG, e.getLocalizedMessage());
-        }
+        int minBufferSize = AudioTrack.getMinBufferSize(
+                BITRATE,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_FLOAT);
+
+        int bufferSizeInBytes = (int) (PLAY_BUFFER_TIME * 2 * 2 * BITRATE);
+        if (bufferSizeInBytes < minBufferSize)
+            bufferSizeInBytes = minBufferSize;
+
+        track = new AudioTrack(AudioManager.STREAM_MUSIC,
+                BITRATE,
+                AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_FLOAT,
+                bufferSizeInBytes,
+                AudioTrack.MODE_STREAM);
+
+        final int finalBufferSizeInBytes = bufferSizeInBytes;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                socket.on("data-converted", new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        try {
+                            handleIncomingData(finalBufferSizeInBytes, args);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "Error occurred.");
+                            Log.e(TAG, e.getLocalizedMessage());
+                        }
+                    }
+                });
+            }
+        }).start();
+        socket.on("error", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.e(TAG, String.valueOf(args[0]));
+            }
+        });
     }
 
     @Override
@@ -72,6 +101,29 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         socket.disconnect();
     }
+
+    private void handleIncomingData(int bufferSizeInBytes, Object... args) throws JSONException {
+        int packetNo = (int) args[0];
+        String socketId = String.valueOf(args[1]);
+        JSONObject jsonObject = (JSONObject) args[2];
+        float[] audioBuffer = new float[jsonObject.length()];
+        for (int i = 0; i < audioBuffer.length; i++) {
+            audioBuffer[i] = (float) jsonObject.getDouble(String.valueOf(i));
+        }
+
+        int bufferWriteFrame = 0;
+        track.flush();
+        track.play();
+        track.write(audioBuffer, 0, audioBuffer.length, AudioTrack.WRITE_BLOCKING);
+
+        bufferWriteFrame += audioBuffer.length / 2;
+        int bufferPlaybackFrame = track.getPlaybackHeadPosition();
+        double bufferFilled = (bufferWriteFrame - bufferPlaybackFrame) / (bufferSizeInBytes / 4.0);
+        Log.d(TAG, "Play buffer filled: " + bufferFilled + "%");
+
+        track.stop();
+    }
+
 
     private final View.OnClickListener startListener = new View.OnClickListener() {
         @Override
@@ -92,32 +144,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public AudioRecord findAudioRecord() {
-        for (int rate : mSampleRates) {
-            for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT }) {
-                for (short channelConfig : new short[] { AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO }) {
-                    try {
-                        Log.d(TAG, "Attempting rate " + rate + "Hz, bits: " + audioFormat + ", channel: "
-                                + channelConfig);
-                        int bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
-
-                        if (bufferSize != AudioRecord.ERROR_BAD_VALUE) {
-                            // check if we can instantiate and have a success
-                            AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, rate, channelConfig, audioFormat, bufferSize);
-
-                            if (recorder.getState() == AudioRecord.STATE_INITIALIZED)
-                                return recorder;
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error occurred.");
-                        Log.e(TAG, e.getLocalizedMessage());
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     private void requestRecordAudioPermission() {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion > android.os.Build.VERSION_CODES.LOLLIPOP){
@@ -132,6 +158,32 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+                }
+            }
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                }
+            }
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 }
             }
         }
@@ -152,9 +204,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startStreaming() {
-        adpcm.resetEncoder();
-
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void run() {
                 Log.d(TAG, "Start recording... ");
@@ -162,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 int minBufferSize = AudioRecord.getMinBufferSize(
                         BITRATE,
                         AudioFormat.CHANNEL_IN_STEREO,
-                        AudioFormat.ENCODING_PCM_16BIT);
+                        AudioFormat.ENCODING_PCM_FLOAT);
 
                 int bufferSizeInBytes = (int)(RECORD_BUFFER_TIME * 2 * 2 * BITRATE);
                 if (bufferSizeInBytes < minBufferSize)
@@ -172,110 +223,44 @@ public class MainActivity extends AppCompatActivity {
                         MediaRecorder.AudioSource.MIC,
                         BITRATE,
                         AudioFormat.CHANNEL_IN_STEREO,
-                        AudioFormat.ENCODING_PCM_16BIT,
+                        AudioFormat.ENCODING_PCM_FLOAT,
                         bufferSizeInBytes);
-//                    record = findAudioRecord();
 
                 record.startRecording();
 
-                int pos = 0;
-                short[] recordChunk = new short[16384];
+                int pos = 0, packetNo = 0;
+                float[] chunk = new float[65536 * 2];
                 double startTime = System.currentTimeMillis();
 
                 while (streaming) {
-                    pos += record.read(recordChunk, pos, recordChunk.length - pos);
+                    pos += record.read(chunk, pos, chunk.length - pos, AudioRecord.READ_BLOCKING);
 
-                    if(pos == recordChunk.length) {
+                    if(pos == chunk.length) {
                         pos = 0;
-
-                        final byte[] bytes = adpcm.encode(recordChunk);
 
                         JSONObject obj = new JSONObject();
                         try {
-                            obj.put("audio-buffer", bytes);
-                            socket.emit("data", obj);
+                            obj.put("packet-no", packetNo++);
+                            obj.put("socket-id", socket.id());
+                            obj.put("audio-buffer", JSONObject.wrap(chunk));
+                            socket.emit("data-original", obj);
                         } catch (JSONException e) {
                             Log.e(TAG, "Error occurred.");
                             Log.e(TAG, e.getLocalizedMessage());
                         }
 
-                        Log.d(TAG, String.format("MinBufferSize: %d data sent%n", minBufferSize));
+                        Log.d(TAG, String.format("MinBufferSize: %d data sent%n", bufferSizeInBytes));
 
                         double endTime = System.currentTimeMillis();
-                        int kilobytes = bytes.length / 1024;
+                        int kilobytes = chunk.length / 1024;
                         double seconds = (endTime - startTime) / 1000.0;
                         double bandwidth = (kilobytes / seconds);
                         startTime = endTime;
                         Log.d(TAG, "sending = " + bandwidth + " kBs");
-
                     }
                 }
-
                 Log.d(TAG, "Stopped recording...");
             }
         }).start();
-
     }
-
-//    private void startPlaying() {
-//        adpcm.resetEncoder();
-//
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                int minBufferSize = AudioTrack.getMinBufferSize(
-//                        BITRATE,
-//                        AudioFormat.CHANNEL_IN_STEREO,
-//                        AudioFormat.ENCODING_PCM_16BIT);
-//
-//                int bufferSizeInBytes = (int) (PLAY_BUFFER_TIME * 2 * 2 * BITRATE);
-//                if (bufferSizeInBytes < minBufferSize)
-//                    bufferSizeInBytes = minBufferSize;
-//
-//                track = new AudioTrack(AudioManager.STREAM_MUSIC,
-//                        BITRATE,
-//                        AudioFormat.CHANNEL_OUT_STEREO,
-//                        AudioFormat.ENCODING_PCM_16BIT,
-//                        bufferSizeInBytes,
-//                        AudioTrack.MODE_STREAM);
-//
-//                track.play();
-//
-//                int bufferWriteFrame = 0;
-//                //double startTime = System.currentTimeMillis();
-//
-//                while (streaming) {
-//                    StreamReadResult result = nabtoApi.streamRead(stream);
-//                    NabtoStatus status = result.getStatus();
-//                    if (status == NabtoStatus.INVALID_STREAM || status == NabtoStatus.STREAM_CLOSED) {
-//                        stopStreaming();
-//                        break;
-//                    } else if (status != NabtoStatus.OK) {
-//                        Log.v(this.getClass().toString(), "Read error: " + status);
-//                        stopStreaming();
-//                        break;
-//                    }
-//
-//                    /*double endTime = System.currentTimeMillis();
-//                    int kilobytes = result.getData().length / 1024;
-//                    double seconds = (endTime-startTime) / 1000.0;
-//                    double bandwidth = (kilobytes / seconds);  //kilobytes-per-second (kBs)
-//                    startTime = endTime;
-//                    Log.v(this.getClass().toString(), "receiving = " + bandwidth + " kBs");*/
-//
-//                    final short[] playChunk = adpcm.decode(result.getData());
-//                    track.write(playChunk, 0, playChunk.length);
-//
-//                    bufferWriteFrame += playChunk.length / 2;
-//                    int bufferPlaybackFrame = track.getPlaybackHeadPosition();
-//                    double bufferFilled = (bufferWriteFrame - bufferPlaybackFrame) / (bufferSizeInBytes / 4.0);
-//                    Log.v(this.getClass().toString(), "Play buffer filled: " + bufferFilled + "%");
-//                }
-//
-//                track.stop();
-//                track.release();
-//                track = null;
-//            }
-//        }).start();
-//    }
 }

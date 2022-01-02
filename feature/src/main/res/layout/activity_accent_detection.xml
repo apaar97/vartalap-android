@@ -39,13 +39,12 @@
         android:id="@+id/accent_detection_mic"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/shapeoutline"
+        android:drawableStart="@drawable/ic_mic_none_black_24dp"
         android:padding="10dp"
-        android:drawableLeft="@drawable/ic_mic_none_black_24dp"
-        android:layout_marginTop="200dp"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
-        android:textColorHint="@color/white">
-    </Button>
+        android:textColorHint="@color/white"></Button>
 
 </LinearLayout>
