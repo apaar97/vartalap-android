@@ -14,3 +14,7 @@ Problem statement: Real-time accent translation
 #### Presentation
 
 Final presentation slides can be accessed [here](https://drive.google.com/file/d/1MxEnnNbzPLMM01BdOTYZ-khFuqBh0q5F/view?usp=sharing).
+
+#### Codebase
+
+This repository hosts the mobile (android) interface for UPCHAAR application. For web interface of the application, refer [this repo](https://github.com/apaar97/vartalap-web) instead.
