@@ -1,9 +1,9 @@
 ## VARTALAP: Voice Assistant for Real Time Accent & Language Audio Processing
 
 [![SIH 2019](https://badgen.net/badge/hackathon/SIH%202019?icon=terminal&label=hackathon)](https://www.sih.gov.in/sih2019)
-[![GitHub forks](https://img.shields.io/github/forks/apaar97/vartalap?style=social)](https://github.com/apaar97/vartalap/network)
-[![GitHub stars](https://img.shields.io/github/stars/apaar97/vartalap?style=social)](https://github.com/apaar97/vartalap/stargazers)
-[![GitHub license](https://img.shields.io/github/license/apaar97/vartalap)](https://github.com/apaar97/vartalap/blob/master/LICENSE)
+[![GitHub forks](https://img.shields.io/github/forks/apaar97/vartalap-android?style=social)](https://github.com/apaar97/vartalap-android/network)
+[![GitHub stars](https://img.shields.io/github/stars/apaar97/vartalap-android?style=social)](https://github.com/apaar97/vartalap-android/stargazers)
+[![GitHub license](https://img.shields.io/github/license/apaar97/vartalap-android)](https://github.com/apaar97/vartalap-android/blob/master/LICENSE)
 
 #### Smart India Hackathon 2019 | Software edition | Harman International Industries
 
@@ -17,4 +17,4 @@ Final presentation slides can be accessed [here](https://drive.google.com/file/d
 
 #### Codebase
 
-This repository hosts the mobile (android) interface for UPCHAAR application. For web interface of the application, refer [this repo](https://github.com/apaar97/vartalap-web) instead.
+This repository hosts the mobile (android) interface for the application. For web interface, refer [this repo](https://github.com/apaar97/vartalap-web) instead.
